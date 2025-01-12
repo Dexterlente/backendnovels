@@ -88,18 +88,20 @@ class FilterNovelsBySingleGenreView(APIView):
 class PaginatedChaptersListView(APIView):
     def get(self, request, novel_id):
         try:
+            reverse_order = request.query_params.get('reverse', 'false').lower() == 'true'
             chapters = Chapters.objects.filter(novel_id=novel_id)
+
+            if reverse_order:
+                chapters = chapters.order_by('-timestamp') 
 
             paginator = Paginator(chapters, 50)
             page_number = request.query_params.get('page', 1)
             page = paginator.get_page(page_number)
 
-            # Create the Protobuf response object
             response = ChaptersList()
             response.total_pages = paginator.num_pages
             response.current_page = page.number
 
-            # Populate the chapters list in the response
             for chapter in page.object_list:
                 chapter_msg = response.chapters.add()
                 chapter_msg.novel_id = chapter.novel_id

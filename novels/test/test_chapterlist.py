@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 
 from proto.chapterlist_pb2 import ChaptersList
 
-url = 'http://127.0.0.1:8000/api/chapters/27?page=1'
+url = 'http://127.0.0.1:8000/api/chapters/27?reverse=true&page=1'
 
 headers = {
     'Accept': 'application/x-protobuf',  # Accept protobuf responses
