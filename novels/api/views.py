@@ -11,7 +11,6 @@ class PaginatedNovelsProtobufView(APIView):
         # Query all novels from the database
         novels = Novels.objects.all()
 
-        # Set up pagination
         paginator = Paginator(novels, 10)  # Show 10 novels per page
         page_number = request.query_params.get('page', 1)  # Default to page 1
         page = paginator.get_page(page_number)
@@ -29,8 +28,4 @@ class PaginatedNovelsProtobufView(APIView):
             novel_msg.title = str(novel.title)  # Ensure it's a string
             novel_msg.image_url = str(novel.image_url)  # Ensure it's a string
 
-        # Serialize the Protobuf message
-        serialized_data = response.SerializeToString()
-
-        # Return the serialized Protobuf data as an HTTP response
-        return HttpResponse(serialized_data, content_type='application/x-protobuf')
+        return Response(response) # Let the ProtobufRenderer handle serialization

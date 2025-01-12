@@ -1,3 +1,4 @@
+import base64
 from rest_framework.renderers import BaseRenderer
 from proto import novels_pb2  # Ensure this imports the correct generated Protobuf file
 
@@ -14,7 +15,10 @@ class ProtobufRenderer(BaseRenderer):
 
         # Check if the data is already a Protobuf object
         if isinstance(data, novels_pb2.NovelList):
-            return data.SerializeToString()
-        
-        # If the data is not a Protobuf object, raise an error
+            # return data.SerializeToString()
+            serialized_data = data.SerializeToString()
+            # Base64 encode the serialized data to make it less human-readable
+            encoded_data = base64.b64encode(serialized_data).decode('utf-8')
+            return encoded_data.encode('utf-8')  # Return Base64 encoded string as bytes
+
         raise TypeError("Data must be a Protobuf message object, not a {0}".format(type(data)))
