@@ -1,10 +1,11 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Novels
+from .models import Novels, Chapters
 from .services import NovelFilterService
 from django.core.paginator import Paginator
 from proto.novels_pb2 import NovelList
 from proto.noveldetails_pb2 import NovelDetails
+from proto.chapterlist_pb2 import ChaptersList
 from rest_framework import status
 
 class PaginatedNovelsProtobufView(APIView):
@@ -83,3 +84,32 @@ class FilterNovelsBySingleGenreView(APIView):
             novel_msg.image_url = str(novel.image_url)
 
         return Response(response)
+
+class PaginatedChaptersListView(APIView):
+    def get(self, request, novel_id):
+        try:
+            chapters = Chapters.objects.filter(novel_id=novel_id)
+
+            paginator = Paginator(chapters, 50)
+            page_number = request.query_params.get('page', 1)
+            page = paginator.get_page(page_number)
+
+            # Create the Protobuf response object
+            response = ChaptersList()
+            response.total_pages = paginator.num_pages
+            response.current_page = page.number
+
+            # Populate the chapters list in the response
+            for chapter in page.object_list:
+                chapter_msg = response.chapters.add()
+                chapter_msg.novel_id = chapter.novel_id
+                chapter_msg.title = chapter.title or ''
+                chapter_msg.timestamp = chapter.timestamp.isoformat() if chapter.timestamp else ''
+                chapter_msg.index = chapter.index if chapter.index is not None else -1
+
+            # Return the paginated response
+            return Response(response)
+
+        except Chapters.DoesNotExist:
+            error_response = {'error': 'No chapters found for this novel_id'}
+            return Response(error_response, status=status.HTTP_404_NOT_FOUND)
