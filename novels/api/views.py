@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Novels
+from .services import NovelFilterService
 from django.core.paginator import Paginator
 from proto.novels_pb2 import NovelList
 from proto.noveldetails_pb2 import NovelDetails
@@ -52,3 +53,33 @@ class NovelDetailsView(APIView):
         except Novels.DoesNotExist:
             error_response = {'error': 'Novel not found'}
             return Response(error_response, status=status.HTTP_404_NOT_FOUND)
+
+
+class FilterNovelsBySingleGenreView(APIView):
+    """
+    This class-based view filters novels based on a single genre passed in the query parameters.
+    """
+    def get(self, request, *args, **kwargs):
+        genre_to_filter = request.query_params.get('genre', None)
+        
+        if not genre_to_filter:
+            return Response({'error': 'No genre specified'}, status=status.HTTP_400_BAD_REQUEST)
+
+        filtered_novels = NovelFilterService.filter_by_genre(genre_to_filter)
+
+        paginator = Paginator(filtered_novels, 10)
+        page_number = request.query_params.get('page', 1)
+        page = paginator.get_page(page_number)
+
+        response = NovelList()
+
+        response.total_pages = paginator.num_pages
+        response.current_page = page.number
+
+        for novel in page.object_list:
+            novel_msg = response.novels.add()
+            novel_msg.novel_id = novel.novel_id
+            novel_msg.title = str(novel.title)
+            novel_msg.image_url = str(novel.image_url)
+
+        return Response(response)
