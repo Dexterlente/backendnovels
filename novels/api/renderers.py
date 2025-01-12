@@ -1,6 +1,6 @@
 import base64
 from rest_framework.renderers import BaseRenderer
-from proto import novels_pb2
+from proto import novels_pb2, noveldetails_pb2
 
 class ProtobufRenderer(BaseRenderer):
     """
@@ -12,9 +12,11 @@ class ProtobufRenderer(BaseRenderer):
     def render(self, data, accepted_media_type=None, renderer_context=None):
         if data is None:
             return b''
+        # Dynamically check if data is an instance of any Protobuf class
+        protobuf_types = [novels_pb2.NovelList, noveldetails_pb2.NovelDetails] 
 
         # Check if the data is already a Protobuf object
-        if isinstance(data, novels_pb2.NovelList):
+        if isinstance(data, tuple(protobuf_types)):
             # return data.SerializeToString()
             serialized_data = data.SerializeToString()
             # Base64 encode the serialized data to make it less human-readable
