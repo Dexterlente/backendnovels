@@ -34,25 +34,21 @@ class PaginatedNovelsProtobufView(APIView):
 class NovelDetailsView(APIView):
     def get(self, request, novel_id):
         try:
-            # Retrieve the novel details from the database
             novel = Novels.objects.get(novel_id=novel_id)
 
-            # Create a new instance of the ProtoBuf message
             novel_detail = NovelDetails()
 
-            # Populate the ProtoBuf message with the novel details
             novel_detail.novel_id = novel.novel_id
-            novel_detail.image_url = novel.image_url or ''
-            novel_detail.title = novel.title or ''
-            novel_detail.genre = novel.genre or ''
-            novel_detail.synopsis = novel.synopsis or ''
-            novel_detail.tags = novel.tags or ''
-            novel_detail.author = novel.author or ''
+            novel_detail.image_url = str(novel.image_url) or ''
+            novel_detail.title = str(novel.title) or ''
+            novel_detail.genre = ', '.join(novel.genre) if novel.genre else ''
+            novel_detail.synopsis = str(novel.synopsis) or ''
+            novel_detail.tags = ', '.join(novel.tags) or ''
+            novel_detail.author = str(novel.author) if novel.author else ''
             novel_detail.last_chapter = novel.last_chapter if novel.last_chapter is not None else 0
 
             return Response(novel_detail)
 
         except Novels.DoesNotExist:
-            # Handle the case where the novel is not found
             error_response = {'error': 'Novel not found'}
             return Response(error_response, status=status.HTTP_404_NOT_FOUND)
