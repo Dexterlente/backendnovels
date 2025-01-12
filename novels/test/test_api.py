@@ -39,6 +39,7 @@ if response.status_code == 200:
 
         # Print all the novels
         for novel in novel_list.novels:
+            print(f'novel id: {novel.novel_id}')
             print(f'Title: {novel.title}')
             print(f'Image URL: {novel.image_url}')
             print('---')
@@ -47,3 +48,6 @@ if response.status_code == 200:
         print(f'Failed to decode and deserialize the Protobuf data: {e}')
 else:
     print(f"Failed to fetch data from API, status code: {response.status_code}")
+
+
+# protoc --python_out=. novels.proto

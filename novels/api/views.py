@@ -25,6 +25,7 @@ class PaginatedNovelsProtobufView(APIView):
         # Add each novel to the Protobuf response
         for novel in page.object_list:
             novel_msg = response.novels.add()  # Add a new novel message
+            novel_msg.novel_id = novel.novel_id
             novel_msg.title = str(novel.title)  # Ensure it's a string
             novel_msg.image_url = str(novel.image_url)  # Ensure it's a string
 
