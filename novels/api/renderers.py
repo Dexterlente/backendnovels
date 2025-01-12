@@ -1,6 +1,6 @@
 import base64
 from rest_framework.renderers import BaseRenderer
-from proto import novels_pb2  # Ensure this imports the correct generated Protobuf file
+from proto import novels_pb2
 
 class ProtobufRenderer(BaseRenderer):
     """

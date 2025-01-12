@@ -1,10 +1,15 @@
 import requests
 import base64
+import sys
+import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 # from novels_pb2 import NovelList  # Make sure you import your generated Protobuf classes
 from proto.novels_pb2 import NovelList
 
 # Endpoint URL
-url = 'http://localhost:8000/api/novels/?page=1'
+url = 'http://localhost:8000/api/novels/?page=2'
 
 # Setting headers to accept Protobuf
 headers = {
