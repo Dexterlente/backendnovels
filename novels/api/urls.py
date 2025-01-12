@@ -3,7 +3,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # Define your API views here
-    # Example:
-    # path('endpoint/', views.some_view, name='some_view'),
+     path('novels/', views.PaginatedNovelsProtobufView.as_view(), name='paginated_novels_protobuf'),
 ]

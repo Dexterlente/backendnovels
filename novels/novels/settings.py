@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-==ujg*u0jfux6u7*$tqztebtl2%(q1xhmgim8zua9xhm-m3#fy
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -41,6 +41,15 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+        'api.renderers.ProtobufRenderer',
+    ],
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
