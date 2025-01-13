@@ -3,11 +3,12 @@ from rest_framework.response import Response
 from .models import Novels, Chapters
 from .services import NovelFilterService
 from django.core.paginator import Paginator
-from proto.novels_pb2 import NovelList
+from proto.novels_pb2 import NovelList, Novel
 from proto.noveldetails_pb2 import NovelDetails
 from proto.chapterlist_pb2 import ChaptersList
 from proto.chapterdetail_pb2 import ChapterDetails
 from rest_framework import status
+import random
 
 class PaginatedNovelsProtobufView(APIView):
     def get(self, request, *args, **kwargs):
@@ -143,3 +144,25 @@ class ChapterDetailsView(APIView):
         except Chapters.DoesNotExist:
             error_response = {'error': 'Novel not found'}
             return Response(error_response, status=status.HTTP_404_NOT_FOUND)
+
+
+class NovelSingleRandom(APIView):
+    def get(self, request, *args, **kwargs):
+        genre_to_filter = request.query_params.get('genre', None)
+        
+        if not genre_to_filter:
+            return Response({'error': 'No genre specified'}, status=status.HTTP_400_BAD_REQUEST)
+
+        filtered_novels = NovelFilterService.filter_by_genre(genre_to_filter)
+        if not filtered_novels.exists():
+            return Response({'error': 'No novels found for the specified genre'}, status=status.HTTP_404_NOT_FOUND)
+
+        novel = random.choice(filtered_novels)
+
+        NovelBook = Novel()
+
+        NovelBook.novel_id = novel.novel_id
+        NovelBook.title = str(novel.title)
+        NovelBook.image_url = str(novel.image_url)
+
+        return Response(NovelBook)
