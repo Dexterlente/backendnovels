@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
@@ -6,5 +6,5 @@ urlpatterns = [
      path('novel-details/<int:novel_id>/', views.NovelDetailsView.as_view()),
      path('novels/single/', views.FilterNovelsBySingleGenreView.as_view()),
      path('chapters/<int:novel_id>', views.PaginatedChaptersListView.as_view()),
-     path('chapters-details/<int:novel_id>/<int:index>', views.ChapterDetailsView.as_view()),
+     re_path(r'^chapters-details/(?P<novel_id>\d+)/(?P<index>\d+)(?:/(?P<subchapter>\d+))?/$', views.ChapterDetailsView.as_view())
 ]

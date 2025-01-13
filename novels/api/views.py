@@ -119,9 +119,15 @@ class PaginatedChaptersListView(APIView):
             return Response(error_response, status=status.HTTP_404_NOT_FOUND)
 
 class ChapterDetailsView(APIView):
-    def get(self, request, novel_id, index):
+    def get(self, request, novel_id, index, subchapter=None):
         try:
-            chapter = Chapters.objects.get(novel_id=novel_id, index=index)
+            if subchapter is None:
+                chapter = Chapters.objects.get(novel_id=novel_id, index=index)
+                if chapter is None:
+                    error_response = {'error': 'Chapter not found'}
+                    return Response(error_response, status=status.HTTP_404_NOT_FOUND)
+            else:
+                 chapter = Chapters.objects.get(novel_id=novel_id, index=index, subchapter=subchapter)
 
             chapter_detail = ChapterDetails()
 

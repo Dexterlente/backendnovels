@@ -5,9 +5,9 @@ import os
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from proto.noveldetails_pb2 import  NovelDetails
+from proto.chapterdetail_pb2 import  ChapterDetails
 
-url = 'http://localhost:8000/api/novel-details/12'
+url = 'http://127.0.0.1:8000/api/chapters-details/27/1'
 
 headers = {
     'Accept': 'application/x-protobuf',
