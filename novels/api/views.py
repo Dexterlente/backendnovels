@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from proto.novels_pb2 import NovelList
 from proto.noveldetails_pb2 import NovelDetails
 from proto.chapterlist_pb2 import ChaptersList
+from proto.chapterdetail_pb2 import ChapterDetails
 from rest_framework import status
 
 class PaginatedNovelsProtobufView(APIView):
@@ -115,4 +116,24 @@ class PaginatedChaptersListView(APIView):
 
         except Chapters.DoesNotExist:
             error_response = {'error': 'No chapters found for this novel_id'}
+            return Response(error_response, status=status.HTTP_404_NOT_FOUND)
+
+class ChapterDetailsView(APIView):
+    def get(self, request, novel_id, index):
+        try:
+            chapter = Chapters.objects.get(novel_id=novel_id, index=index)
+
+            chapter_detail = ChapterDetails()
+
+            chapter_detail.novel_id = chapter.novel_id
+            chapter_detail.title = str(chapter.title) or ''
+            chapter_detail.timestamp = chapter.timestamp.isoformat() if chapter.timestamp else ''
+            chapter_detail.index = chapter.index if chapter.subchapter is not None else -1
+            chapter_detail.subchapter = chapter.subchapter if chapter.subchapter is not None else -1
+            chapter_detail.content = str(chapter.content) or ''
+
+            return Response(chapter_detail)
+
+        except Chapters.DoesNotExist:
+            error_response = {'error': 'Novel not found'}
             return Response(error_response, status=status.HTTP_404_NOT_FOUND)

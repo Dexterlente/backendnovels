@@ -1,6 +1,6 @@
 import base64
 from rest_framework.renderers import BaseRenderer
-from proto import novels_pb2, noveldetails_pb2, chapterlist_pb2
+from proto import novels_pb2, noveldetails_pb2, chapterlist_pb2, chapterdetail_pb2
 
 class ProtobufRenderer(BaseRenderer):
     """
@@ -13,7 +13,7 @@ class ProtobufRenderer(BaseRenderer):
         if data is None:
             return b''
         # Dynamically check if data is an instance of any Protobuf class
-        protobuf_types = [novels_pb2.NovelList, noveldetails_pb2.NovelDetails, chapterlist_pb2.ChaptersList] 
+        protobuf_types = [novels_pb2.NovelList, noveldetails_pb2.NovelDetails, chapterlist_pb2.ChaptersList, chapterdetail_pb2.ChapterDetails] 
 
         # Check if the data is already a Protobuf object
         if isinstance(data, tuple(protobuf_types)):
