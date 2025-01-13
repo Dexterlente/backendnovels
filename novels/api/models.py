@@ -11,6 +11,7 @@ class Chapters(models.Model):
     content = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(blank=True, null=True)
     index = models.IntegerField(blank=True, null=True)
+    subchapter= models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False

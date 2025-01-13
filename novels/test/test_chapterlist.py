@@ -28,6 +28,6 @@ if response.status_code == 200:
     print(f'Current Page: {chapter_list.current_page}')
 
     for chapter in chapter_list.chapters:
-        print(f"Novel ID: {chapter.novel_id}, Title: {chapter.title}, Timestamp: {chapter.timestamp}, Index: {chapter.index}")
+        print(f"Novel ID: {chapter.novel_id}, Title: {chapter.title}, Timestamp: {chapter.timestamp}, Index: {chapter.index} , Subchapter: {chapter.subchapter}")
 else:
     print(f"Failed to fetch data, status code: {response.status_code}")

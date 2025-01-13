@@ -108,6 +108,7 @@ class PaginatedChaptersListView(APIView):
                 chapter_msg.title = chapter.title or ''
                 chapter_msg.timestamp = chapter.timestamp.isoformat() if chapter.timestamp else ''
                 chapter_msg.index = chapter.index if chapter.index is not None else -1
+                chapter_msg.subchapter = chapter.subchapter if chapter.subchapter is not None else -1
 
             # Return the paginated response
             return Response(response)
