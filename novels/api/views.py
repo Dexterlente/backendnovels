@@ -166,3 +166,25 @@ class NovelSingleRandom(APIView):
         NovelBook.image_url = str(novel.image_url)
 
         return Response(NovelBook)
+
+class SevenRandomNovel(APIView):
+    def get(self, request, *args, **kwargs):
+        genre_to_filter = request.query_params.get('genre', None)
+            
+        if not genre_to_filter:
+            return Response({'error': 'No genre specified'}, status=status.HTTP_400_BAD_REQUEST)
+
+        filtered_novels = NovelFilterService.filter_by_genre(genre_to_filter)
+        random_novels = random.sample(list(filtered_novels), min(7, len(filtered_novels)))
+
+        response = NovelList()
+        response.total_pages = len(filtered_novels)
+        response.current_page = len(random_novels)
+
+        for novel in random_novels:
+            novel_msg = response.novels.add()
+            novel_msg.novel_id = novel.novel_id  
+            novel_msg.title = str(novel.title)
+            novel_msg.image_url = str(novel.image_url)
+
+        return Response(response)
