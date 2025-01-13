@@ -29,18 +29,16 @@ if response.status_code == 200:
 
 
         # Deserialize the Protobuf data into a NovelDetails object
-        novel_details = NovelDetails()
-        novel_details.ParseFromString(serialized_data)  # Parse the Protobuf data
+        chapter_details = ChapterDetails()
+        chapter_details.ParseFromString(serialized_data)  # Parse the Protobuf data
 
         # Print out the decoded novel details
-        print(f"Novel ID: {novel_details.novel_id}")
-        print(f"Title: {novel_details.title}")
-        print(f"Image URL: {novel_details.image_url}")
-        print(f"Genre: {novel_details.genre}")
-        print(f"Synopsis: {novel_details.synopsis}")
-        print(f"Tags: {novel_details.tags}")
-        print(f"Author: {novel_details.author}")
-        print(f"Last Chapter: {novel_details.last_chapter}")
+        print(f"Novel ID: {chapter_details.novel_id}")
+        print(f"Title: {chapter_details.title}")
+        print(f"Content: {chapter_details.content}")
+        print(f"Timestamp: {chapter_details.timestamp}")
+        print(f"Index: {chapter_details.index}")
+        print(f"Subchapter: {chapter_details.subchapter}")
 
     except Exception as e:
         print(f"Failed to decode and deserialize the Protobuf data: {e}")
