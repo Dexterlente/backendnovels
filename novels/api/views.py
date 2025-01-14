@@ -188,3 +188,34 @@ class SevenRandomNovel(APIView):
             novel_msg.image_url = str(novel.image_url)
 
         return Response(response)
+
+class GetLatestChaptersList(APIView):
+    def get(self, novel_id):
+        try:
+            chapters = Chapters.objects.all().order_by('-timestamp')
+
+            paginator = Paginator(chapters, 14)
+            page_number = 1
+            page = paginator.get_page(page_number)
+
+            response = ChaptersList()
+            response.total_pages = paginator.num_pages
+            response.current_page = page.number
+
+            for chapter in page.object_list:
+                chapter_msg = response.chapters.add()
+                chapter_msg.novel_id = chapter.novel_id
+                chapter_msg.title = chapter.title or ''
+                chapter_msg.timestamp = chapter.timestamp.isoformat() if chapter.timestamp else ''
+                chapter_msg.index = chapter.index if chapter.index is not None else -1
+                chapter_msg.subchapter = chapter.subchapter if chapter.subchapter is not None else -1
+
+                novel = Novels.objects.filter(novel_id=chapter.novel_id).first()
+                chapter_msg.novel_title = novel.title if novel else 'Unknown'
+
+            return Response(response)
+
+        except Exception as e:
+            error_response = {'error': str(e)}
+            return Response(error_response, status=status.HTTP_400_BAD_REQUEST)
+                

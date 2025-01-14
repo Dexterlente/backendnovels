@@ -8,5 +8,6 @@ urlpatterns = [
      path('chapters/<int:novel_id>', views.PaginatedChaptersListView.as_view()),
      re_path(r'^chapters-details/(?P<novel_id>\d+)/(?P<index>\d+)(?:/(?P<subchapter>\d+))?/$', views.ChapterDetailsView.as_view()),
      path('novel/random/', views.NovelSingleRandom.as_view()),
-     path('novel/list-random/', views.SevenRandomNovel.as_view())
+     path('novel/list-random/', views.SevenRandomNovel.as_view()),
+     path('novel/list-latest/', views.GetLatestChaptersList.as_view())
 ]
