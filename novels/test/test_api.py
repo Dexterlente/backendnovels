@@ -10,7 +10,8 @@ from proto.novels_pb2 import NovelList
 
 # Endpoint URL
 # url = 'http://localhost:8000/api/novels/?page=2'
-url = 'http://127.0.0.1:8000/api/novels/single/?genre=Harem&page=1'
+# url = 'http://127.0.0.1:8000/api/novels/single/?genre=Harem&page=1'
+url = 'http://127.0.0.1:8000/api/novels/search?title=a%20playground'
 
 # Setting headers to accept Protobuf
 headers = {

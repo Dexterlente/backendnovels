@@ -219,3 +219,35 @@ class GetLatestChaptersList(APIView):
             error_response = {'error': str(e)}
             return Response(error_response, status=status.HTTP_400_BAD_REQUEST)
                 
+class SearchNovels(APIView):
+    def get(self, request, *args, **kwargs):
+        try:
+            title_query = request.query_params.get('title', None)
+
+            novels = Novels.objects.all()
+            if title_query == '':
+                return Response(NovelList())
+                
+            if title_query:
+                novels = novels.filter(title__icontains=title_query)
+                
+            paginator = Paginator(novels, 10)
+            page_number = request.query_params.get('page', 1)  # Default to page 1
+            page = paginator.get_page(page_number)
+
+            response = NovelList()
+
+            response.total_pages = paginator.num_pages
+            response.current_page = page.number
+
+            for novel in page.object_list:
+                novel_msg = response.novels.add()
+                novel_msg.novel_id = novel.novel_id
+                novel_msg.title = str(novel.title)
+                novel_msg.image_url = str(novel.image_url)
+
+            return Response(response)
+
+        except Exception as e:
+            error_response = {'error': str(e)}
+            return Response(error_response, status=status.HTTP_400_BAD_REQUEST)
