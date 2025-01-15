@@ -35,4 +35,4 @@ class Novels(models.Model):
         db_table = 'novels'
 
     def __str__(self):
-        return self.title
+        return f"Novel_id-{self.novel_id} {self.title}"
