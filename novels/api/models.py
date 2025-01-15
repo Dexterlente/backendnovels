@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.postgres.fields import ArrayField
 
 class CustomUser(AbstractUser):
     pass
@@ -23,12 +24,15 @@ class Novels(models.Model):
     image_url = models.CharField(max_length=255, blank=True, null=True)
     image_cover_url = models.CharField(max_length=255, blank=True, null=True)
     title = models.CharField(max_length=255, blank=True, null=True)
-    genre = models.TextField(blank=True, null=True)  # This field type is a guess.
+    genre = ArrayField(models.CharField(max_length=100), blank=True, default=list)
     synopsis = models.TextField(blank=True, null=True)
-    tags = models.TextField(blank=True, null=True)  # This field type is a guess.
+    tags = ArrayField(models.CharField(max_length=100), blank=True, default=list)
     author = models.CharField(max_length=255, blank=True, null=True)
     last_chapter = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'novels'
+
+    def __str__(self):
+        return self.title
