@@ -164,6 +164,7 @@ class NovelSingleRandom(APIView):
         NovelBook.novel_id = novel.novel_id
         NovelBook.title = str(novel.title)
         NovelBook.image_url = str(novel.image_url)
+        NovelBook.synopsis = str(novel.synopsis)
 
         return Response(NovelBook)
 

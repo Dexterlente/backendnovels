@@ -6,6 +6,7 @@ message Novel {
     int32 novel_id = 1;
     string title = 2;
     string image_url = 3;
+    string synopsis = 4;
 }
 
 message NovelList {
