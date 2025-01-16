@@ -9,6 +9,7 @@ message Chapter {
   int32 index = 4;
   int32 subchapter = 5;
   string novel_title = 6;
+  string image_url = 7;
 }
 
 message ChaptersList {
