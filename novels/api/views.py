@@ -39,6 +39,8 @@ class NovelDetailsView(APIView):
     def get(self, request, novel_id):
         try:
             novel = Novels.objects.get(novel_id=novel_id)
+            
+            first_chapter = Chapters.objects.filter(novel_id=novel_id).order_by('index').first()
 
             novel_detail = NovelDetails()
 
@@ -50,6 +52,8 @@ class NovelDetailsView(APIView):
             novel_detail.tags = ', '.join(novel.tags) or ''
             novel_detail.author = str(novel.author) if novel.author else ''
             novel_detail.last_chapter = novel.last_chapter if novel.last_chapter is not None else 0
+
+            novel_detail.first_chapter = first_chapter.index if first_chapter else None
 
             return Response(novel_detail)
 
