@@ -96,9 +96,11 @@ class PaginatedChaptersListView(APIView):
         try:
             reverse_order = request.query_params.get('reverse', 'false').lower() == 'true'
             chapters = Chapters.objects.filter(novel_id=novel_id)
-
+            
             if reverse_order:
-                chapters = chapters.order_by('-timestamp') 
+                chapters = chapters.order_by('-index', '-timestamp')  # Reverse timestamp order
+            else:
+                chapters = chapters.order_by('index', 'timestamp')  # Regular timestamp order
 
             paginator = Paginator(chapters, 50)
             page_number = request.query_params.get('page', 1)
