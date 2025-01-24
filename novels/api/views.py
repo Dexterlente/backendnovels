@@ -219,8 +219,10 @@ class GetLatestChaptersList(APIView):
 
                 novel = Novels.objects.filter(novel_id=chapter.novel_id).first()
                 chapter_msg.novel_title = novel.title if novel else 'Unknown'
-                chapter_msg.image_url = novel.image_url if novel else 'Unknown'
-                chapter_msg.author = novel.author if novel else 'Unknown'
+                if novel.image_url:
+                    chapter_msg.image_url = novel.image_url
+                if novel.author:
+                    chapter_msg.author = novel.author # return only if available
 
             return Response(response)
 
