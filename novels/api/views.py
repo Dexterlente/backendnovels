@@ -42,6 +42,8 @@ class NovelDetailsView(APIView):
             novel = Novels.objects.get(novel_id=novel_id)
             
             first_chapter = Chapters.objects.filter(novel_id=novel_id).order_by('index').first()
+            first_sub_chapter = first_chapter.subchapter if first_chapter and first_chapter.subchapter is not None else -1
+            first_chapter_index = first_chapter.index if first_chapter and first_chapter.index is not None else -1
 
             novel_detail = NovelDetails()
 
@@ -54,9 +56,9 @@ class NovelDetailsView(APIView):
             novel_detail.author = str(novel.author) if novel.author else ''
             novel_detail.last_chapter = novel.last_chapter if novel.last_chapter is not None else 0
 
-            novel_detail.first_chapter = first_chapter.index if first_chapter else None
-            novel_detail.first_sub_chapter = first_chapter.subchapter if first_chapter else -1
-
+            novel_detail.first_chapter = first_chapter_index
+            novel_detail.first_sub_chapter = first_sub_chapter
+            
             return Response(novel_detail)
 
         except Novels.DoesNotExist:
