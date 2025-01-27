@@ -55,6 +55,7 @@ class NovelDetailsView(APIView):
             novel_detail.last_chapter = novel.last_chapter if novel.last_chapter is not None else 0
 
             novel_detail.first_chapter = first_chapter.index if first_chapter else None
+            novel_detail.first_sub_chapter = first_chapter.subchapter if first_chapter else -1
 
             return Response(novel_detail)
 
