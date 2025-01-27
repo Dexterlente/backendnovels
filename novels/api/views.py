@@ -141,7 +141,7 @@ class ChapterDetailsView(APIView):
             chapter_detail.novel_id = chapter.novel_id
             chapter_detail.title = str(chapter.title) or ''
             chapter_detail.timestamp = chapter.timestamp.isoformat() if chapter.timestamp else ''
-            chapter_detail.index = chapter.index if chapter.subchapter is not None else -1
+            chapter_detail.index = chapter.index if chapter.index is not None else -1
             chapter_detail.subchapter = chapter.subchapter if chapter.subchapter is not None else -1
             chapter_detail.content = str(chapter.content) or ''
 
