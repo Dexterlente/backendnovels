@@ -9,4 +9,12 @@ message ChapterDetails {
   int32 index = 4;
   int32 subchapter = 5;
   string content = 6;
+  
+  message ChapterIndex {
+        int32 index = 1;
+        int32 subchapter = 2;
+    }
+  ChapterIndex index_before = 7;
+  ChapterIndex index_after = 8;
+
 }

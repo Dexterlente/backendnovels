@@ -9,6 +9,7 @@ from proto.chapterlist_pb2 import ChaptersList
 from proto.chapterdetail_pb2 import ChapterDetails
 from rest_framework import status
 import random
+from django.db.models import Q 
 
 class PaginatedNovelsProtobufView(APIView):
     def get(self, request, *args, **kwargs):
@@ -136,6 +137,29 @@ class ChapterDetailsView(APIView):
             else:
                  chapter = Chapters.objects.get(novel_id=novel_id, index=index, subchapter=subchapter)
 
+            # Fetch the previous chapter (previous index or previous subchapter)
+            previous_chapter = None
+            if subchapter is None:
+                # Find the previous index, check for the highest subchapter in the previous index
+                previous_chapter = Chapters.objects.filter(novel_id=novel_id, index__lt=index).order_by('-index', '-subchapter').first()
+            else:
+                # If subchapter is provided, look for the previous subchapter in the same index or previous index
+                previous_chapter = Chapters.objects.filter(novel_id=novel_id).filter(
+                    Q(index=index, subchapter__lt=subchapter) | Q(index__lt=index)
+                ).order_by('-index', '-subchapter').first()
+
+            # Fetch the next chapter (next index or next subchapter)
+            next_chapter = None
+            if subchapter is None:
+                # Find the next index, check for the lowest subchapter in the next index
+                next_chapter = Chapters.objects.filter(novel_id=novel_id, index__gt=index).order_by('index', 'subchapter').first()
+            else:
+                # If subchapter is provided, look for the next subchapter in the same index or next index
+                next_chapter = Chapters.objects.filter(novel_id=novel_id).filter(
+                    Q(index=index, subchapter__gt=subchapter) | Q(index__gt=index)
+                ).order_by('index', 'subchapter').first()
+
+
             chapter_detail = ChapterDetails()
 
             chapter_detail.novel_id = chapter.novel_id
@@ -144,6 +168,14 @@ class ChapterDetailsView(APIView):
             chapter_detail.index = chapter.index if chapter.index is not None else -1
             chapter_detail.subchapter = chapter.subchapter if chapter.subchapter is not None else -1
             chapter_detail.content = str(chapter.content) or ''
+
+            if previous_chapter:
+                chapter_detail.index_before.index = previous_chapter.index
+                chapter_detail.index_before.subchapter = previous_chapter.subchapter if previous_chapter.subchapter is not None else -1
+
+            if next_chapter:
+                chapter_detail.index_after.index = next_chapter.index
+                chapter_detail.index_after.subchapter = next_chapter.subchapter if next_chapter.subchapter is not None else -1
 
             return Response(chapter_detail)
 

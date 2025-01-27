@@ -13,13 +13,15 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13\x63hapterdetail.proto\x12\x08\x63hapters\"x\n\x0e\x43hapterDetails\x12\x10\n\x08novel_id\x18\x01 \x01(\x05\x12\r\n\x05title\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\x05\x12\x12\n\nsubchapter\x18\x05 \x01(\x05\x12\x0f\n\x07\x63ontent\x18\x06 \x01(\tb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x13\x63hapterdetail.proto\x12\x08\x63hapters\"\xa4\x02\n\x0e\x43hapterDetails\x12\x10\n\x08novel_id\x18\x01 \x01(\x05\x12\r\n\x05title\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\t\x12\r\n\x05index\x18\x04 \x01(\x05\x12\x12\n\nsubchapter\x18\x05 \x01(\x05\x12\x0f\n\x07\x63ontent\x18\x06 \x01(\t\x12;\n\x0cindex_before\x18\x07 \x01(\x0b\x32%.chapters.ChapterDetails.ChapterIndex\x12:\n\x0bindex_after\x18\x08 \x01(\x0b\x32%.chapters.ChapterDetails.ChapterIndex\x1a\x31\n\x0c\x43hapterIndex\x12\r\n\x05index\x18\x01 \x01(\x05\x12\x12\n\nsubchapter\x18\x02 \x01(\x05\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'chapterdetail_pb2', globals())
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
-  _CHAPTERDETAILS._serialized_start=33
-  _CHAPTERDETAILS._serialized_end=153
+  _CHAPTERDETAILS._serialized_start=34
+  _CHAPTERDETAILS._serialized_end=326
+  _CHAPTERDETAILS_CHAPTERINDEX._serialized_start=277
+  _CHAPTERDETAILS_CHAPTERINDEX._serialized_end=326
 # @@protoc_insertion_point(module_scope)

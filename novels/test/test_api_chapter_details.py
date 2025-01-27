@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 
 from proto.chapterdetail_pb2 import  ChapterDetails
 
-url = 'http://127.0.0.1:8000/api/chapters-details/27/1'
+url = 'http://127.0.0.1:8000/api/chapters-details/134/138/2'
 
 headers = {
     'Accept': 'application/x-protobuf',
@@ -39,6 +39,9 @@ if response.status_code == 200:
         print(f"Timestamp: {chapter_details.timestamp}")
         print(f"Index: {chapter_details.index}")
         print(f"Subchapter: {chapter_details.subchapter}")
+        print(f"index_before: {chapter_details.index_before}")
+        print(f"index_after: {chapter_details.index_after}")
+
 
     except Exception as e:
         print(f"Failed to decode and deserialize the Protobuf data: {e}")
