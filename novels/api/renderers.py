@@ -13,7 +13,7 @@ class ProtobufRenderer(BaseRenderer):
         if data is None:
             return b''
         # Dynamically check if data is an instance of any Protobuf class
-        protobuf_types = [novels_pb2.Novel, novels_pb2.NovelList, noveldetails_pb2.NovelDetails, chapterlist_pb2.ChaptersList, chapterdetail_pb2.ChapterDetails] 
+        protobuf_types = [novels_pb2.Novel, novels_pb2.NovelList, novels_pb2.GenreList, novels_pb2.Genres, noveldetails_pb2.NovelDetails, chapterlist_pb2.ChaptersList, chapterdetail_pb2.ChapterDetails] 
 
         # Check if the data is already a Protobuf object
         if isinstance(data, tuple(protobuf_types)):

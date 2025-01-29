@@ -3,13 +3,31 @@ from rest_framework.response import Response
 from .models import Novels, Chapters
 from .services import NovelFilterService
 from django.core.paginator import Paginator
-from proto.novels_pb2 import NovelList, Novel
+from proto.novels_pb2 import NovelList, Novel, GenreList, Genres
 from proto.noveldetails_pb2 import NovelDetails
 from proto.chapterlist_pb2 import ChaptersList
 from proto.chapterdetail_pb2 import ChapterDetails
 from rest_framework import status
 import random
-from django.db.models import Q 
+from django.db.models import Q
+
+class ReturnAllGenres(APIView):
+    def get(self, request, *args, **kwargs):
+        # Fetch all genres (flattened) from the database
+        genres = Novels.objects.values_list('genre', flat=True)
+
+        if genres:
+            # Flatten the list and remove duplicates
+            unique_genres = list(set(genre for sublist in genres for genre in sublist))
+        else:
+            unique_genres = []
+
+        genre_list = GenreList()
+        for genre in unique_genres:
+            genre_message = Genres(genre=genre)
+            genre_list.novels.append(genre_message)
+        
+        return Response(genre_list)
 
 class PaginatedNovelsProtobufView(APIView):
     def get(self, request, *args, **kwargs):

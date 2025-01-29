@@ -14,3 +14,11 @@ message NovelList {
     int32 total_pages = 2;
     int32 current_page = 3;
 }
+
+message Genres {
+    string genre = 1;
+}
+
+message GenreList{
+    repeated Genres novels = 1;
+}
