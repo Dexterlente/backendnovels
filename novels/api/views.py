@@ -9,8 +9,12 @@ from proto.chapterlist_pb2 import ChaptersList
 from proto.chapterdetail_pb2 import ChapterDetails
 from rest_framework import status
 import random
+import re
 from django.db.models import Q
 
+def strip_html_tags(text):
+    clean = re.compile("<.*?>")
+    return re.sub(clean, "", text)
 class ReturnAllGenres(APIView):
     def get(self, request, *args, **kwargs):
         genres = Novels.objects.values_list('genre', flat=True)
@@ -49,6 +53,7 @@ class PaginatedNovelsProtobufView(APIView):
             novel_msg.novel_id = novel.novel_id
             novel_msg.title = str(novel.title)  # Ensure it's a string
             novel_msg.image_url = str(novel.image_url)  # Ensure it's a string
+            novel_msg.synopsis = (strip_html_tags(str(novel.synopsis))[:300] + "..." if len(strip_html_tags(str(novel.synopsis))) > 100 else strip_html_tags(str(novel.synopsis))) or ''
 
         return Response(response) # Let the ProtobufRenderer handle serialization
 
@@ -108,6 +113,7 @@ class FilterNovelsBySingleGenreView(APIView):
             novel_msg.novel_id = novel.novel_id
             novel_msg.title = str(novel.title)
             novel_msg.image_url = str(novel.image_url)
+            novel_msg.synopsis = (strip_html_tags(str(novel.synopsis))[:300] + "..." if len(strip_html_tags(str(novel.synopsis))) > 100 else strip_html_tags(str(novel.synopsis))) or ''
 
         return Response(response)
 
