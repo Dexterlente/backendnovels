@@ -13,12 +13,10 @@ from django.db.models import Q
 
 class ReturnAllGenres(APIView):
     def get(self, request, *args, **kwargs):
-        # Fetch all genres (flattened) from the database
         genres = Novels.objects.values_list('genre', flat=True)
 
         if genres:
-            # Flatten the list and remove duplicates
-            unique_genres = list(set(genre for sublist in genres for genre in sublist))
+            unique_genres = sorted(set(genre for sublist in genres for genre in sublist))
         else:
             unique_genres = []
 
