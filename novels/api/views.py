@@ -313,6 +313,7 @@ class SearchNovels(APIView):
                 novel_msg.novel_id = novel.novel_id
                 novel_msg.title = str(novel.title)
                 novel_msg.image_url = str(novel.image_url)
+                novel_msg.synopsis = (strip_html_tags(str(novel.synopsis))[:170] + "..." if len(strip_html_tags(str(novel.synopsis))) > 100 else strip_html_tags(str(novel.synopsis))) or ''
 
             return Response(response)
 
