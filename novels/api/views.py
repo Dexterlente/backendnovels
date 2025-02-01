@@ -10,7 +10,8 @@ from proto.chapterdetail_pb2 import ChapterDetails
 from rest_framework import status
 import random
 import re
-from django.db.models import Q
+from django.db.models import Q, Window, F
+from django.db.models.functions import RowNumber
 
 def strip_html_tags(text):
     clean = re.compile("<.*?>")
@@ -253,15 +254,26 @@ class SevenRandomNovel(APIView):
 
         return Response(response)
 
-class GetLatestChaptersList(APIView):
-    def get(self, novel_id):
-        try:
-            chapters = Chapters.objects.all().order_by('-timestamp')
 
+
+class GetLatestChaptersList(APIView):
+    def get(self, request):  # Remove `novel_id` parameter
+        try:
+            # Use Window function to rank chapters per novel and fetch the latest
+            chapters = Chapters.objects.annotate(
+                rank=Window(
+                    expression=RowNumber(),
+                    partition_by=[F('novel_id')],
+                    order_by=F('timestamp').desc()
+                )
+            ).filter(rank=1).select_related('novel').order_by('-timestamp')
+
+            # Paginate the results
             paginator = Paginator(chapters, 14)
-            page_number = 1
+            page_number = request.query_params.get('page', 1)
             page = paginator.get_page(page_number)
 
+            # Build the response
             response = ChaptersList()
             response.total_pages = paginator.num_pages
             response.current_page = page.number
@@ -274,12 +286,13 @@ class GetLatestChaptersList(APIView):
                 chapter_msg.index = chapter.index if chapter.index is not None else -1
                 chapter_msg.subchapter = chapter.subchapter if chapter.subchapter is not None else -1
 
-                novel = Novels.objects.filter(novel_id=chapter.novel_id).first()
+                # Access pre-fetched novel data via select_related
+                novel = chapter.novel  # Already loaded with select_related
                 chapter_msg.novel_title = novel.title if novel else 'Unknown'
                 if novel.image_url:
                     chapter_msg.image_url = novel.image_url
                 if novel.author:
-                    chapter_msg.author = novel.author # return only if available
+                    chapter_msg.author = novel.author
 
             return Response(response)
 
