@@ -13,4 +13,5 @@ message NovelDetails {
     int32 last_chapter = 8;
     int32 first_chapter = 9;
     int32 first_sub_chapter = 10;
+    string images = 11;
 }

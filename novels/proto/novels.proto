@@ -7,6 +7,7 @@ message Novel {
     string title = 2;
     string image_url = 3;
     string synopsis = 4;
+    string images = 5;
 }
 
 message NovelList {

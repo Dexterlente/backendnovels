@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cnovels.proto\x12\x06novels\"M\n\x05Novel\x12\x10\n\x08novel_id\x18\x01 \x01(\x05\x12\r\n\x05title\x18\x02 \x01(\t\x12\x11\n\timage_url\x18\x03 \x01(\t\x12\x10\n\x08synopsis\x18\x04 \x01(\t\"U\n\tNovelList\x12\x1d\n\x06novels\x18\x01 \x03(\x0b\x32\r.novels.Novel\x12\x13\n\x0btotal_pages\x18\x02 \x01(\x05\x12\x14\n\x0c\x63urrent_page\x18\x03 \x01(\x05\"\x17\n\x06Genres\x12\r\n\x05genre\x18\x01 \x01(\t\"+\n\tGenreList\x12\x1e\n\x06novels\x18\x01 \x03(\x0b\x32\x0e.novels.Genresb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cnovels.proto\x12\x06novels\"]\n\x05Novel\x12\x10\n\x08novel_id\x18\x01 \x01(\x05\x12\r\n\x05title\x18\x02 \x01(\t\x12\x11\n\timage_url\x18\x03 \x01(\t\x12\x10\n\x08synopsis\x18\x04 \x01(\t\x12\x0e\n\x06images\x18\x05 \x01(\t\"U\n\tNovelList\x12\x1d\n\x06novels\x18\x01 \x03(\x0b\x32\r.novels.Novel\x12\x13\n\x0btotal_pages\x18\x02 \x01(\x05\x12\x14\n\x0c\x63urrent_page\x18\x03 \x01(\x05\"\x17\n\x06Genres\x12\r\n\x05genre\x18\x01 \x01(\t\"+\n\tGenreList\x12\x1e\n\x06novels\x18\x01 \x03(\x0b\x32\x0e.novels.Genresb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'novels_pb2', globals())
@@ -21,11 +21,11 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _NOVEL._serialized_start=24
-  _NOVEL._serialized_end=101
-  _NOVELLIST._serialized_start=103
-  _NOVELLIST._serialized_end=188
-  _GENRES._serialized_start=190
-  _GENRES._serialized_end=213
-  _GENRELIST._serialized_start=215
-  _GENRELIST._serialized_end=258
+  _NOVEL._serialized_end=117
+  _NOVELLIST._serialized_start=119
+  _NOVELLIST._serialized_end=204
+  _GENRES._serialized_start=206
+  _GENRES._serialized_end=229
+  _GENRELIST._serialized_start=231
+  _GENRELIST._serialized_end=274
 # @@protoc_insertion_point(module_scope)

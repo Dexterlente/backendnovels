@@ -11,6 +11,7 @@ message Chapter {
   string novel_title = 6;
   string image_url = 7;
   string author = 8;
+  string images = 9;
 }
 
 message ChaptersList {
