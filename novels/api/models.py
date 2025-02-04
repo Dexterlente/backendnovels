@@ -29,6 +29,7 @@ class Novels(models.Model):
     tags = ArrayField(models.CharField(max_length=100), blank=True, default=list)
     author = models.CharField(max_length=255, blank=True, null=True)
     last_chapter = models.IntegerField(blank=True, null=True)
+    images = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False

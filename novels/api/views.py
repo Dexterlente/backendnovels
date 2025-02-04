@@ -55,6 +55,7 @@ class PaginatedNovelsProtobufView(APIView):
             novel_msg.title = str(novel.title)  # Ensure it's a string
             novel_msg.image_url = str(novel.image_url)  # Ensure it's a string
             novel_msg.synopsis = (strip_html_tags(str(novel.synopsis))[:170] + "..." if len(strip_html_tags(str(novel.synopsis))) > 100 else strip_html_tags(str(novel.synopsis))) or ''
+            novel_msg.images = str(novel.images)
 
         return Response(response) # Let the ProtobufRenderer handle serialization
 
@@ -77,6 +78,7 @@ class NovelDetailsView(APIView):
             novel_detail.tags = ', '.join(novel.tags) or ''
             novel_detail.author = str(novel.author) if novel.author else ''
             novel_detail.last_chapter = novel.last_chapter if novel.last_chapter is not None else 0
+            novel_detail.images = str(novel.images) or ''
 
             novel_detail.first_chapter = first_chapter_index
             novel_detail.first_sub_chapter = first_sub_chapter
@@ -115,6 +117,7 @@ class FilterNovelsBySingleGenreView(APIView):
             novel_msg.title = str(novel.title)
             novel_msg.image_url = str(novel.image_url)
             novel_msg.synopsis = (strip_html_tags(str(novel.synopsis))[:170] + "..." if len(strip_html_tags(str(novel.synopsis))) > 100 else strip_html_tags(str(novel.synopsis))) or ''
+            novel_msg.images = str(novel.images)
 
         return Response(response)
 
@@ -229,6 +232,7 @@ class NovelSingleRandom(APIView):
         NovelBook.title = str(novel.title)
         NovelBook.image_url = str(novel.image_url)
         NovelBook.synopsis = str(novel.synopsis)
+        NovelBook.images = str(novel.images)
 
         return Response(NovelBook)
 
@@ -251,6 +255,7 @@ class SevenRandomNovel(APIView):
             novel_msg.novel_id = novel.novel_id  
             novel_msg.title = str(novel.title)
             novel_msg.image_url = str(novel.image_url)
+            novel_msg.images = str(novel.images)
 
         return Response(response)
 
@@ -293,6 +298,8 @@ class GetLatestChaptersList(APIView):
                     chapter_msg.image_url = novel.image_url
                 if novel.author:
                     chapter_msg.author = novel.author
+                if novel.images:
+                    chapter_msg.images = novel.images
 
             return Response(response)
 
@@ -327,6 +334,7 @@ class SearchNovels(APIView):
                 novel_msg.title = str(novel.title)
                 novel_msg.image_url = str(novel.image_url)
                 novel_msg.synopsis = (strip_html_tags(str(novel.synopsis))[:170] + "..." if len(strip_html_tags(str(novel.synopsis))) > 100 else strip_html_tags(str(novel.synopsis))) or ''
+                novel_msg.images = str(novel.images)
 
             return Response(response)
 
