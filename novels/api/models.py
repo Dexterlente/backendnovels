@@ -22,7 +22,6 @@ class Chapters(models.Model):
 class Novels(models.Model):
     novel_id = models.AutoField(primary_key=True)
     image_url = models.CharField(max_length=255, blank=True, null=True)
-    image_cover_url = models.CharField(max_length=255, blank=True, null=True)
     title = models.CharField(max_length=255, blank=True, null=True)
     genre = ArrayField(models.CharField(max_length=100), blank=True, default=list)
     synopsis = models.TextField(blank=True, null=True)
