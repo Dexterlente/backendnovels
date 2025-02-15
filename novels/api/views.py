@@ -261,6 +261,7 @@ class SevenRandomNovel(APIView):
         return Response(response)
 
 class GetLatestChaptersList(APIView):
+    renderer_classes = [ProtobufRenderer]
     def get(self, request):
         try:
             # chapters = Chapters.objects.annotate(
