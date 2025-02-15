@@ -17,6 +17,10 @@ class Chapters(models.Model):
     class Meta:
         managed = False
         db_table = 'chapters'
+        indexes = [
+            models.Index(fields=['novel_id']),
+            models.Index(fields=['timestamp']),
+        ]
 
 
 class Novels(models.Model):

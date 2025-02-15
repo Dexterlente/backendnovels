@@ -10,8 +10,7 @@ from proto.chapterdetail_pb2 import ChapterDetails
 from rest_framework import status
 import random
 import re
-from django.db.models import Q, Window, F
-from django.db.models.functions import RowNumber
+from django.db.models import Q
 
 def strip_html_tags(text):
     clean = re.compile("<.*?>")
@@ -259,26 +258,22 @@ class SevenRandomNovel(APIView):
 
         return Response(response)
 
-
-
 class GetLatestChaptersList(APIView):
-    def get(self, request):  # Remove `novel_id` parameter
+    def get(self, request):
         try:
-            # Use Window function to rank chapters per novel and fetch the latest
-            chapters = Chapters.objects.annotate(
-                rank=Window(
-                    expression=RowNumber(),
-                    partition_by=[F('novel_id')],
-                    order_by=F('timestamp').desc()
-                )
-            ).filter(rank=1).select_related('novel').order_by('-timestamp')
+            # chapters = Chapters.objects.annotate(
+            #     rank=Window(
+            #         expression=RowNumber(),
+            #         partition_by=[F('novel_id')],
+            #         order_by=F('timestamp').desc()
+            #     )
+            # ).filter(rank=1).order_by('-timestamp')[:10].select_related('novel')
+            chapters = Chapters.objects.order_by('-timestamp')[:10].select_related('novel')
 
-            # Paginate the results
-            paginator = Paginator(chapters, 14)
+            paginator = Paginator(chapters, 10)
             page_number = request.query_params.get('page', 1)
             page = paginator.get_page(page_number)
 
-            # Build the response
             response = ChaptersList()
             response.total_pages = paginator.num_pages
             response.current_page = page.number
@@ -305,6 +300,7 @@ class GetLatestChaptersList(APIView):
 
         except Exception as e:
             error_response = {'error': str(e)}
+            print(e)
             return Response(error_response, status=status.HTTP_400_BAD_REQUEST)
                 
 class SearchNovels(APIView):
