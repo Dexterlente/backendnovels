@@ -11,6 +11,7 @@ from rest_framework import status
 import random
 import re
 from django.db.models import Q
+from api.renderers import ProtobufRenderer
 
 def strip_html_tags(text):
     clean = re.compile("<.*?>")
@@ -213,6 +214,7 @@ class ChapterDetailsView(APIView):
 
 
 class NovelSingleRandom(APIView):
+    renderer_classes = [ProtobufRenderer]
     def get(self, request, *args, **kwargs):
         genre_to_filter = request.query_params.get('genre', None)
         
