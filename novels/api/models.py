@@ -18,8 +18,7 @@ class Chapters(models.Model):
         managed = False
         db_table = 'chapters'
         indexes = [
-            models.Index(fields=['novel_id']),
-            models.Index(fields=['timestamp']),
+            models.Index(fields=['novel_id', 'timestamp']),
         ]
 
 
