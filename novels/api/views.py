@@ -10,7 +10,8 @@ from proto.chapterdetail_pb2 import ChapterDetails
 from rest_framework import status
 import random
 import re
-from django.db.models import Q, Window, RowNumber, F
+from django.db.models import Q, Window, F
+from django.db.models.functions import RowNumber
 from api.renderers import ProtobufRenderer
 
 def strip_html_tags(text):
@@ -270,7 +271,7 @@ class GetLatestChaptersList(APIView):
                     partition_by=[F('novel_id')],
                     order_by=F('timestamp').desc()
                 )
-            ).filter(rank=1).order_by('-timestamp')[:10].select_related('novel')
+            ).filter(rank=1).select_related('novel').order_by('-timestamp')
             # chapters = Chapters.objects.order_by('-timestamp')[:10].select_related('novel')
 
             paginator = Paginator(chapters, 10)
